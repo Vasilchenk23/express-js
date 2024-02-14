@@ -1,7 +1,10 @@
 import { Router } from "express";
 import axios from 'axios';
+import cors from 'cors';
 
 const routes = Router();
+
+routes.use(cors()); 
 
 routes.post("/hello", async (req, res) => {
   try {
@@ -34,3 +37,4 @@ routes.post("/hello", async (req, res) => {
 });
 
 export default routes;
+
