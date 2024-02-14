@@ -1,14 +1,17 @@
 import { Router } from "express";
-import axios from 'axios';
-import cors from 'cors';
+import axios from 'axios'; 
+import cors from 'cors'; 
 
-const routes = Router();
+const routes = Router(); 
 
 routes.use(cors()); 
+
+app.use(express.json());
 
 routes.post("/hello", async (req, res) => {
   try {
     const orderData = req.body;
+
     const telegramBotToken = '6769576713:AAFHPH_ObAOeNGC9kvYNWt8mG8-utwPs7KQ';
     const chatId = '1936815365';
 
@@ -18,8 +21,8 @@ routes.post("/hello", async (req, res) => {
       Телефон: ${orderData.userTelephone}
       Город: ${orderData.deliveryCityName}
       Отделение: ${orderData.deliveryDepart}
-      Имя Товара ${orderData.userOrderProduct}
-      Размеры ${orderData.productSizes}
+      Имя Товара: ${orderData.userOrderProduct}
+      Размеры: ${orderData.productSizes}
       Оплата: ${orderData.paymentOption}
       Комментарий: ${orderData.orderComment}
     `;
@@ -36,5 +39,5 @@ routes.post("/hello", async (req, res) => {
   }
 });
 
-export default routes;
+export default routes; 
 
