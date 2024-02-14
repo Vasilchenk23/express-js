@@ -1,43 +1,45 @@
-import { Router } from "express";
-import axios from 'axios'; 
-import cors from 'cors'; 
+// helloRouter.js
 
-const routes = Router(); 
+import express from 'express';
+import axios from 'axios';
+import cors from 'cors';
 
-routes.use(cors()); 
+const routes = express.Router(); 
 
-app.use(express.json());
+routes.use(cors());
+export default function setupHelloRouter(app) {
+  app.use(express.json());
+  routes.post("/hello", async (req, res) => {
+    try {
+      const orderData = req.body;
+      const telegramBotToken = '6769576713:AAFHPH_ObAOeNGC9kvYNWt8mG8-utwPs7KQ';
+      const chatId = '1936815365';
+  
+      const message = `
+        Новый заказ!
+        Имя: ${orderData.userName}
+        Телефон: ${orderData.userTelephone}
+        Город: ${orderData.deliveryCityName}
+        Отделение: ${orderData.deliveryDepart}
+        Имя Товара ${orderData.userOrderProduct}
+        Размеры ${orderData.productSizes}
+        Оплата: ${orderData.paymentOption}
+        Комментарий: ${orderData.orderComment}
+      `;
+  
+      await axios.post(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+        chat_id: chatId,
+        text: message,
+      });
+  
+      res.status(200).send('Order submitted successfully');
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
+  
+  return routes; 
+}
 
-routes.post("/hello", async (req, res) => {
-  try {
-    const orderData = req.body;
-
-    const telegramBotToken = '6769576713:AAFHPH_ObAOeNGC9kvYNWt8mG8-utwPs7KQ';
-    const chatId = '1936815365';
-
-    const message = `
-      Новый заказ!
-      Имя: ${orderData.userName}
-      Телефон: ${orderData.userTelephone}
-      Город: ${orderData.deliveryCityName}
-      Отделение: ${orderData.deliveryDepart}
-      Имя Товара: ${orderData.userOrderProduct}
-      Размеры: ${orderData.productSizes}
-      Оплата: ${orderData.paymentOption}
-      Комментарий: ${orderData.orderComment}
-    `;
-
-    await axios.post(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-      chat_id: chatId,
-      text: message,
-    });
-
-    res.status(200).send('Order submitted successfully');
-  } catch (error) {
-    console.error('Error submitting order:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-export default routes; 
 
