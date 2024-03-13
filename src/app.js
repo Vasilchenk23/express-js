@@ -41,7 +41,7 @@ app.post("/order", (req, res) => {
     Комментарий: ${orderComment}
   `;
 
-  bot.sendMessage('1936815365', message)
+  bot.sendMessage('5406411100', message)
     .then(() => {
       console.log('Order notification sent to Telegram');
       res.status(200).send({ message: 'Order submitted successfully' });
